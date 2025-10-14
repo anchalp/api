@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.github.eneco.tests.bookings.PatchBookingTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.309 s - in com.github.eneco.tests.bookings.PatchBookingTest

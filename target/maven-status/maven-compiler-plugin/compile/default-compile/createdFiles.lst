@@ -1,0 +1,4 @@
+com\github\eneco\url\RestfulBookerUrls.class
+com\github\eneco\dataObject\request\BookingDataObject.class
+com\github\eneco\properties\RestfulBookerProperties.class
+com\github\eneco\dataObject\request\BookingdatesDataObject.class
