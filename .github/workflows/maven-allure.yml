@@ -48,9 +48,11 @@ jobs:
           sudo ln -s $HOME/allure/allure-${ALLURE_VERSION}/bin/allure /usr/local/bin/allure
           allure --version
 
-      # Step 6: Generate Allure report using CLI (fixed Bash syntax)
+      # Step 6: Generate Allure report using CLI
       - name: Generate Allure report
         run: |
+          #!/bin/bash
+          set -e
           mkdir -p target/allure-report
           if [ -d "target/allure-results" ] && [ "$(ls -A target/allure-results)" ]; then
             echo "Generating Allure report with CLI..."
@@ -61,9 +63,11 @@ jobs:
             echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
           fi
 
-      # Step 7: Verify Allure report structure (fixed Bash syntax)
+      # Step 7: Verify Allure report structure
       - name: Verify Allure report
         run: |
+          #!/bin/bash
+          set -e
           REQUIRED=("index.html" "css" "js" "data" "plugins")
           MISSING=()
           for item in "${REQUIRED[@]}"; do
