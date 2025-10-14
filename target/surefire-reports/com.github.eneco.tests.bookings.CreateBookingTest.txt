@@ -1,12 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: com.github.eneco.tests.bookings.CreateBookingTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.053 s <<< FAILURE! - in com.github.eneco.tests.bookings.CreateBookingTest
-com.github.eneco.tests.bookings.CreateBookingTest.createBookingWithInvalidDatesTest  Time elapsed: 1.578 s  <<< FAILURE!
+Tests run: 3, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 6.246 s <<< FAILURE! - in com.github.eneco.tests.bookings.CreateBookingTest
+com.github.eneco.tests.bookings.CreateBookingTest.createBookingWithInvalidDatesTest  Time elapsed: 1.651 s  <<< FAILURE!
 org.opentest4j.AssertionFailedError: 
 
 expected: "Invalid date"
- but was: "{"bookingid":848,"booking":{"firstname":"Anchal","lastname":"Pandey","totalprice":9999,"depositpaid":true,"bookingdates":{"checkin":"0NaN-aN-aN","checkout":"2210-12-01"},"additionalneeds":"Lunch"}}"
+ but was: "{"bookingid":4237,"booking":{"firstname":"Anchal","lastname":"Pandey","totalprice":9999,"depositpaid":true,"bookingdates":{"checkin":"0NaN-aN-aN","checkout":"2210-12-01"},"additionalneeds":"Lunch"}}"
 	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
 	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:501)
 	at com.github.eneco.tests.bookings.CreateBookingTest.createBookingWithInvalidDatesTest(CreateBookingTest.java:57)

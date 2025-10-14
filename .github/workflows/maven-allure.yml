@@ -66,9 +66,12 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/allure-report
+          publish_dir: target/allure-report/  # ✅ trailing slash ensures contents are deployed
           keep_files: false
           force_orphan: true
+          publish_branch: gh-pages
+          allow_empty_commit: false
+          enable_jekyll: false
 
       # Step 8: Add clickable report link to workflow summary
       - name: Add Allure report link to workflow summary

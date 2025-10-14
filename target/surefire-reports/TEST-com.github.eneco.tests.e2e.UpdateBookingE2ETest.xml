@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="3.304" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="3.323" tests="6" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Users\Vurehout 239\.jdks\openjdk-23.0.1\bin"/>
-    <property name="sun.java.command" value="C:\Users\Vurehout 239\AppData\Local\Temp\surefire14125642663537645596\surefirebooter-20251014235203131_3.jar C:\Users\Vurehout 239\AppData\Local\Temp\surefire14125642663537645596 2025-10-14T23-52-02_570-jvmRun1 surefire-20251014235203131_1tmp surefire_0-20251014235203131_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Vurehout 239\AppData\Local\Temp\surefire5811797691741219654\surefirebooter-20251015002817587_3.jar C:\Users\Vurehout 239\AppData\Local\Temp\surefire5811797691741219654 2025-10-15T00-28-17_218-jvmRun1 surefire-20251015002817587_1tmp surefire_0-20251015002817587_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Vurehout 239\Desktop\RestAPI\target\test-classes;C:\Users\Vurehout 239\Desktop\RestAPI\target\classes;C:\Users\Vurehout 239\.m2\repository\io\rest-assured\rest-assured\5.2.0\rest-assured-5.2.0.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\groovy\groovy\4.0.1\groovy-4.0.1.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\groovy\groovy-xml\4.0.1\groovy-xml-4.0.1.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\httpcomponents\httpclient\4.5.13\httpclient-4.5.13.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\httpcomponents\httpcore\4.4.13\httpcore-4.4.13.jar;C:\Users\Vurehout 239\.m2\repository\commons-logging\commons-logging\1.2\commons-logging-1.2.jar;C:\Users\Vurehout 239\.m2\repository\commons-codec\commons-codec\1.11\commons-codec-1.11.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\httpcomponents\httpmime\4.5.13\httpmime-4.5.13.jar;C:\Users\Vurehout 239\.m2\repository\org\hamcrest\hamcrest\2.1\hamcrest-2.1.jar;C:\Users\Vurehout 239\.m2\repository\org\ccil\cowan\tagsoup\tagsoup\1.2.1\tagsoup-1.2.1.jar;C:\Users\Vurehout 239\.m2\repository\io\rest-assured\json-path\5.2.0\json-path-5.2.0.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\groovy\groovy-json\4.0.1\groovy-json-4.0.1.jar;C:\Users\Vurehout 239\.m2\repository\io\rest-assured\rest-assured-common\5.2.0\rest-assured-common-5.2.0.jar;C:\Users\Vurehout 239\.m2\repository\io\rest-assured\xml-path\5.2.0\xml-path-5.2.0.jar;C:\Users\Vurehout 239\.m2\repository\org\apache\commons\commons-lang3\3.11\commons-lang3-3.11.jar;C:\Users\Vurehout 239\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.9.1\junit-jupiter-api-5.9.1.jar;C:\Users\Vurehout 239\.m2\repository\org\opentest4j\opentest4j\1.2.0\opentest4j-1.2.0.jar;C:\Users\Vurehout 239\.m2\repository\org\junit\platform\junit-platform-commons\1.9.1\junit-platform-commons-1.9.1.jar;C:\Users\Vurehout 239\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Vurehout 239\.m2\repository\org\assertj\assertj-core\3.23.1\assertj-core-3.23.1.jar;C:\Users\Vurehout 239\.m2\repository\net\bytebuddy\byte-buddy\1.12.10\byte-buddy-1.12.10.jar;C:\Users\Vurehout 239\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.14.0-rc2\jackson-databind-2.14.0-rc2.jar;C:\Users\Vurehout 239\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.14.0-rc2\jackson-annotations-2.14.0-rc2.jar;C:\Users\Vurehout 239\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.14.0-rc2\jackson-core-2.14.0-rc2.jar;C:\Users\Vurehout 239\.m2\repository\org\projectlombok\lombok\1.18.24\lombok-1.18.24.jar;C:\Users\Vurehout 239\.m2\repository\org\slf4j\slf4j-simple\2.0.3\slf4j-simple-2.0.3.jar;C:\Users\Vurehout 239\.m2\repository\org\slf4j\slf4j-api\2.0.3\slf4j-api-2.0.3.jar;C:\Users\Vurehout 239\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.9.1\junit-jupiter-params-5.9.1.jar;C:\Users\Vurehout 239\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.9.1\junit-jupiter-engine-5.9.1.jar;C:\Users\Vurehout 239\.m2\repository\org\junit\platform\junit-platform-engine\1.9.1\junit-platform-engine-1.9.1.jar;C:\Users\Vurehout 239\.m2\repository\org\json\json\20240303\json-20240303.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-rest-assured\2.19.0\allure-rest-assured-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-attachments\2.19.0\allure-attachments-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-java-commons\2.19.0\allure-java-commons-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-model\2.19.0\allure-model-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\org\freemarker\freemarker\2.3.31\freemarker-2.3.31.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-junit5\2.19.0\allure-junit5-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-junit-platform\2.19.0\allure-junit-platform-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\io\qameta\allure\allure-test-filter\2.19.0\allure-test-filter-2.19.0.jar;C:\Users\Vurehout 239\.m2\repository\org\junit\platform\junit-platform-launcher\1.8.2\junit-platform-launcher-1.8.2.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Vurehout 239\AppData\Local\Temp\surefire14125642663537645596\surefirebooter-20251014235203131_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Vurehout 239\AppData\Local\Temp\surefire5811797691741219654\surefirebooter-20251015002817587_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.1+11-39"/>
@@ -59,10 +59,10 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="createToken" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.537"/>
-  <testcase name="createBooking" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.578"/>
-  <testcase name="getBooking" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.568"/>
-  <testcase name="updateBookingWithDepositPaid" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.53"/>
-  <testcase name="updateBookingWithAdditionalNeedsAndTotalPrice" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.524"/>
-  <testcase name="deleteBooking" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.544"/>
+  <testcase name="createToken" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.509"/>
+  <testcase name="createBooking" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.613"/>
+  <testcase name="getBooking" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.532"/>
+  <testcase name="updateBookingWithDepositPaid" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.564"/>
+  <testcase name="updateBookingWithAdditionalNeedsAndTotalPrice" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.574"/>
+  <testcase name="deleteBooking" classname="com.github.eneco.tests.e2e.UpdateBookingE2ETest" time="0.511"/>
 </testsuite>
