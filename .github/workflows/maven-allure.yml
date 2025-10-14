@@ -39,11 +39,11 @@ jobs:
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Verify Allure results exist
+      # Step 5: Verify Allure results
       - name: Check Allure results
         run: |
-          echo "Listing Allure results:"
           mkdir -p target/allure-results
+          echo "Listing Allure results:"
           ls -R target/allure-results
 
       # Step 6: Generate Allure report
@@ -72,6 +72,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # ✅ Publish contents of target/allure-report directly at root
           publish_dir: target/allure-report/
           keep_files: false
           force_orphan: true
