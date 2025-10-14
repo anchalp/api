@@ -1,4 +1,4 @@
-name: Java CI with Maven + Docker + Versioned Allure Reports
+name: Java CI with Maven + Versioned Allure Reports
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  docker-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,39 +18,45 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Step 2: Run Maven tests in Docker
-      - name: Run Maven tests in Docker
-        run: |
-          docker run --rm \
-            -v ${{ github.workspace }}:/workspace \
-            -w /workspace \
-            maven:3.9.6-jdk-17 \
-            mvn clean test -Dsurefire.failIfNoTests=false
-        shell: bash
+      # Step 2: Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Step 3: Cache Maven dependencies
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # Step 4: Run Maven tests (continue even if some fail)
+      - name: Run Maven tests
+        run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 3: Set versioned report directory
+      # Step 5: Set versioned report directory
       - name: Set versioned report directory
         run: echo "REPORT_DIR=target/allure-report-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
 
-      # Step 4: Generate Allure report inside Docker
+      # Step 6: Generate Allure report
       - name: Generate Allure report
         run: |
           mkdir -p target/allure-results
           if [ "$(ls -A target/allure-results 2>/dev/null)" ]; then
             echo "Allure results found, generating versioned report..."
-            docker run --rm \
-              -v ${{ github.workspace }}:/workspace \
-              -w /workspace \
-              maven:3.9.6-jdk-17 \
-              mvn allure:report -Dallure.report.directory=$REPORT_DIR
+            mvn allure:report -Dallure.report.directory=$REPORT_DIR
           else
             echo "⚠️ No Allure results found. Creating placeholder report."
             mkdir -p $REPORT_DIR
             echo "<html><body><h2>No Allure results found</h2></body></html>" > $REPORT_DIR/index.html
           fi
 
-      # Step 5: Upload versioned report as artifact
+      # Step 7: Upload versioned report as artifact
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -58,7 +64,7 @@ jobs:
           path: ${{ env.REPORT_DIR }}
           if-no-files-found: warn
 
-      # Step 6: Deploy versioned report to GitHub Pages
+      # Step 8: Deploy versioned report to GitHub Pages
       - name: Deploy Allure report to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
@@ -68,7 +74,7 @@ jobs:
           keep_files: true
           force_orphan: false
 
-      # Step 7: Add clickable report link to workflow summary
+      # Step 9: Add clickable report link to workflow summary
       - name: Add Allure report link to workflow summary
         if: github.ref == 'refs/heads/main'
         run: |
