@@ -1,4 +1,4 @@
-name: Java CI with Maven + Versioned Allure Reports
+name: Java CI with Maven + Allure Report
 
 on:
   push:
@@ -39,47 +39,42 @@ jobs:
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Set versioned report directory
-      - name: Set versioned report directory
-        run: echo "REPORT_DIR=target/allure-report-${GITHUB_RUN_NUMBER}" >> $GITHUB_ENV
-
-      # Step 6: Generate Allure report
+      # Step 5: Generate Allure report
       - name: Generate Allure report
         run: |
           mkdir -p target/allure-results
           if [ "$(ls -A target/allure-results 2>/dev/null)" ]; then
-            echo "Allure results found, generating versioned report..."
-            mvn allure:report -Dallure.report.directory=$REPORT_DIR
+            echo "Allure results found, generating report..."
+            mvn allure:report -Dallure.report.directory=target/allure-report
           else
             echo "⚠️ No Allure results found. Creating placeholder report."
-            mkdir -p $REPORT_DIR
-            echo "<html><body><h2>No Allure results found</h2></body></html>" > $REPORT_DIR/index.html
-          fi
+            mkdir -p target/allure-report
+            echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
 
-      # Step 7: Upload versioned report as artifact
+      # Step 6: Upload Allure report as artifact
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "allure-report-${GITHUB_RUN_NUMBER}"
-          path: ${{ env.REPORT_DIR }}
+          name: allure-report
+          path: target/allure-report
           if-no-files-found: warn
 
-      # Step 8: Deploy versioned report to GitHub Pages
+      # Step 7: Deploy Allure report to GitHub Pages
       - name: Deploy Allure report to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${{ env.REPORT_DIR }}
-          keep_files: true
-          force_orphan: false
+          publish_dir: target/allure-report
+          keep_files: false
+          force_orphan: true
 
-      # Step 9: Add clickable report link to workflow summary
+      # Step 8: Add clickable report link to workflow summary
       - name: Add Allure report link to workflow summary
         if: github.ref == 'refs/heads/main'
         run: |
-          REPORT_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/allure-report-${GITHUB_RUN_NUMBER}/"
-          echo "### 🧾 Allure Report (Run #${GITHUB_RUN_NUMBER})" >> $GITHUB_STEP_SUMMARY
+          REPORT_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "### 🧾 Allure Report" >> $GITHUB_STEP_SUMMARY
           echo "🔗 **[View Allure Report]($REPORT_URL)**" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "✅ Report published at: $REPORT_URL"
