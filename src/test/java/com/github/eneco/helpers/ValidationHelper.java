@@ -1,6 +1,7 @@
 package com.github.eneco.helpers;
 
 import com.github.eneco.dataObject.request.BookingDataObject;
+import com.github.eneco.dataObject.request.BookingdatesDataObject;
 import io.restassured.path.json.JsonPath;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
