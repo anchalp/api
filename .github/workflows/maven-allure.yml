@@ -61,7 +61,7 @@ jobs:
             echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
           fi
 
-      # Step 7: Verify Allure report structure
+      # Step 7: Verify Allure report structure (fixed Bash syntax)
       - name: Verify Allure report
         run: |
           REQUIRED=("index.html" "css" "js" "data" "plugins")
@@ -71,6 +71,7 @@ jobs:
               MISSING+=("$item")
             fi
           done
+
           if [ ${#MISSING[@]} -ne 0 ]; then
             echo "❌ Missing required Allure report files/folders: ${MISSING[*]}"
             exit 1
