@@ -39,27 +39,32 @@ jobs:
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Generate Allure report
+      # Step 5: Generate Allure report (create folder if missing)
       - name: Generate Allure report
         if: always()
         run: |
-          if [ -d "target/allure-results" ]; then
+          # Ensure the allure-results directory exists
+          mkdir -p target/allure-results
+          # Check if any results exist
+          if [ "$(ls -A target/allure-results 2>/dev/null)" ]; then
+            echo "Allure results found, generating report..."
             mvn allure:report
           else
-            echo "⚠️ No Allure results found, creating placeholder report"
+            echo "⚠️ No Allure results found. Creating placeholder report."
             mkdir -p target/site/allure-maven-plugin
             echo "<html><body><h2>No Allure results found</h2></body></html>" > target/site/allure-maven-plugin/index.html
           fi
 
-      # Step 6: Upload report as artifact
+      # Step 6: Upload Allure report as artifact
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: target/site/allure-maven-plugin
+          if-no-files-found: warn
 
-      # Step 7: Deploy to GitHub Pages (main branch only)
+      # Step 7: Deploy Allure report to GitHub Pages
       - name: Deploy Allure report to GitHub Pages
         if: always() && github.ref == 'refs/heads/main'
         id: deploy
