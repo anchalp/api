@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write  # Needed for pushing to gh-pages
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,17 +31,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 1: Run tests — allow this step to fail but continue
+      # Run tests but continue even if they fail
       - name: Run tests
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 2: Generate Allure report (always run)
+      # Always generate Allure report
       - name: Generate Allure report
         if: always()
         run: mvn allure:report
 
-      # Step 3: Upload report as artifact
+      # Upload Allure report as artifact
       - name: Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -46,12 +49,23 @@ jobs:
           name: allure-report
           path: target/site/allure-maven-plugin
 
-      # Step 4: Deploy to GitHub Pages (only on main)
+      # Deploy Allure report to GitHub Pages
       - name: Deploy Allure report to GitHub Pages
         if: always() && github.ref == 'refs/heads/main'
+        id: deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/site/allure-maven-plugin
           keep_files: false
           force_orphan: true
+
+      # Add report link to the workflow summary
+      - name: Add report link to summary
+        if: always() && github.ref == 'refs/heads/main'
+        run: |
+          REPORT_URL="https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          echo "### 🧾 Allure Report Generated" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 **[Click here to view the Allure Report]($REPORT_URL)**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Report successfully published at: $REPORT_URL"
