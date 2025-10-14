@@ -34,15 +34,21 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Run Maven tests (continue even if some fail)
+      # Step 4: Run Maven tests (wait for completion)
       - name: Run Maven tests
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Generate Allure report
+      # Step 5: Verify Allure results exist
+      - name: Check Allure results
+        run: |
+          echo "Listing Allure results:"
+          mkdir -p target/allure-results
+          ls -R target/allure-results
+
+      # Step 6: Generate Allure report
       - name: Generate Allure report
         run: |
-          mkdir -p target/allure-results
           if [ "$(ls -A target/allure-results 2>/dev/null)" ]; then
             echo "Allure results found, generating report..."
             mvn allure:report -Dallure.report.directory=target/allure-report
@@ -52,28 +58,28 @@ jobs:
             echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
           fi
 
-      # Step 6: Upload Allure report as artifact
+      # Step 7: Upload Allure report as artifact (include all files recursively)
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: target/allure-report
+          path: target/allure-report/**
           if-no-files-found: warn
 
-      # Step 7: Deploy Allure report to GitHub Pages
+      # Step 8: Deploy Allure report to GitHub Pages
       - name: Deploy Allure report to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: target/allure-report/  # ✅ trailing slash ensures contents are deployed
+          publish_dir: target/allure-report/
           keep_files: false
           force_orphan: true
           publish_branch: gh-pages
           allow_empty_commit: false
           enable_jekyll: false
 
-      # Step 8: Add clickable report link to workflow summary
+      # Step 9: Add clickable report link to workflow summary
       - name: Add Allure report link to workflow summary
         if: github.ref == 'refs/heads/main'
         run: |
