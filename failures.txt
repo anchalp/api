@@ -1,0 +1,102 @@
+Booking API Test Failures Report
+================================
+
+Summary
+-------
+Total tests run: 42
+Failures: 8
+Errors: 0
+Skipped: 2
+
+All failures (detailed)
+----------------------
+1) Test: BookingErrorHandlingTest.shouldReturnErrorForInvalidDateFormats
+   File: src/test/java/com/github/eneco/tests/bookings/BookingErrorHandlingTest.java
+   One-line scenario: Updating a booking with invalid date formats should return an "Invalid date" error.
+   Expected: Response body == "Invalid date"
+   Actual:   "{\"firstname\":\"Anchal\",\"lastname\":\"Pandey\",\"totalprice\":9999,\"depositpaid\":true,\"bookingdates\":{\"checkin\":\"0NaN-aN-aN\",\"checkout\":\"2025-11-01\"},\"additionalneeds\":\"Lunch\"}"
+   Assertion message / failing line (from Maven output):
+     expected: "Invalid date" but was: "{...}"
+
+2) Test: CreateBookingTest.createBookingWithInvalidDatesTest
+   File: src/test/java/com/github/eneco/tests/bookings/CreateBookingTest.java
+   One-line scenario: Creating a booking with invalid date formats should return an "Invalid date" error.
+   Expected: Response body == "Invalid date"
+   Actual:   "{\"bookingid\":4469,\"booking\":{\"firstname\":\"Anchal\",\"lastname\":\"Pandey\",\"totalprice\":9999,\"depositpaid\":true,\"bookingdates\":{\"checkin\":\"0NaN-aN-aN\",\"checkout\":\"2210-12-01\"},\"additionalneeds\":\"Lunch\"}}"
+   Assertion message / failing line (from Maven output):
+     expected: "Invalid date" but was: "{...}"
+   Note: A suppressed failure in @AfterEach delete indicates Delete returned 405 instead of expected 201 (see surefire reports). That is a separate issue in teardown.
+
+3) Test: GetBookingIdsTest.getBookingIdsByDifferentQueryParamsTest(Map)[2]
+   File: src/test/java/com/github/eneco/tests/bookings/GetBookingIdsTest.java
+   One-line scenario: Querying booking ids with combined query params should return non-empty results.
+   Expected: bookingIds list is not empty
+   Actual:   bookingIds was empty (assertion failure: "Expecting actual not to be empty")
+   Assertion message / failing line (from Maven output):
+     Expecting actual not to be empty
+
+4) Test: GetBookingIdsTest.getBookingIdsByDifferentQueryParamsTest(Map)[3]
+   File: src/test/java/com/github/eneco/tests/bookings/GetBookingIdsTest.java
+   One-line scenario: Querying booking ids with combined query params should return non-empty results.
+   Expected: bookingIds list is not empty
+   Actual:   bookingIds was empty (assertion failure)
+   Assertion message: Expecting actual not to be empty
+
+5) Test: GetBookingIdsTest.getBookingIdsByDifferentQueryParamsTest(Map)[4]
+   File: src/test/java/com/github/eneco/tests/bookings/GetBookingIdsTest.java
+   One-line scenario: Querying booking ids with combined query params should return non-empty results.
+   Expected: bookingIds list is not empty
+   Actual:   bookingIds was empty (assertion failure)
+   Assertion message: Expecting actual not to be empty
+
+6) Test: GetBookingIdsTest.getBookingIdsByFirstnameTest(String)[2]
+   File: src/test/java/com/github/eneco/tests/bookings/GetBookingIdsTest.java
+   One-line scenario: Querying booking ids by firstname (parameterized) should return non-empty results for each firstname.
+   Expected: bookingIds list is not empty
+   Actual:   bookingIds was empty for the given parameter (assertion failure)
+   Assertion message: Expecting actual not to be empty
+
+7) Test: GetBookingIdsTest.getBookingIdsByLastnameTest(String)[2]
+   File: src/test/java/com/github/eneco/tests/bookings/GetBookingIdsTest.java
+   One-line scenario: Querying booking ids by lastname (parameterized) should return non-empty results for each lastname.
+   Expected: bookingIds list is not empty
+   Actual:   bookingIds was empty for the given parameter (assertion failure)
+   Assertion message: Expecting actual not to be empty
+
+8) Test: PutBookingTest.updateBookingUsingInvalidDataTest
+   File: src/test/java/com/github/eneco/tests/bookings/PutBookingTest.java
+   One-line scenario: Updating a booking with invalid date values should return "Invalid date" error instead of saving malformed dates.
+   Expected: Response body == "Invalid date"
+   Actual:   "{\"firstname\":\"John\",\"lastname\":\"John\",\"totalprice\":200,\"depositpaid\":false,\"bookingdates\":{\"checkin\":\"0NaN-aN-aN\",\"checkout\":\"0NaN-aN-aN\"},\"additionalneeds\":\"Breakfast\"}"
+   Assertion message: expected: "Invalid date" but was: "{...}"
+
+Additional notes & next steps
+-----------------------------
+- Raw surefire reports (full failure stacks and request/response dumps) are available at:
+  `target/surefire-reports` (run `mvn test` from project root to regenerate).
+- Several failures indicate the API under test accepts malformed dates and returns a sanitized/garbled date in the response (e.g., "0NaN-aN-aN"). This is likely an API bug rather than a test bug. Tests expecting strict validation will fail.
+- Other failures (GetBookingIdsTest) indicate that some query parameters return empty lists. This may mean test dataset doesn't contain matching bookings for those parameters or the API's filtering behavior differs from expectations.
+
+How I collected these details
+-----------------------------
+- Extracted failure list, messages and actual response payloads from the Maven console output you provided.
+
+What I can do next (pick any or I can do them all):
+- Add the full surefire report contents into this file (long stack traces / request/response bodies).
+- Automatically append HTTP request/response pairs (if captured) to help debugging.
+- Open and parse `target/surefire-reports/*.txt` and `*.xml` to produce a machine-readable report.
+- Create GitHub issue templates for each API bug found.
+
+
+Instructions to regenerate test run locally
+-----------------------------------------
+From the project root (`restful-booker-api-tests-main`) run:
+
+```
+mvn test
+```
+
+Then inspect `target/surefire-reports` for per-test details.
+
+
+File generated by automation on 2025-10-13
