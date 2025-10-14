@@ -39,26 +39,44 @@ jobs:
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Verify Allure results
-      - name: Check Allure results
+      # Step 5: Install Allure CLI
+      - name: Install Allure CLI
         run: |
-          mkdir -p target/allure-results
-          echo "Listing Allure results:"
-          ls -R target/allure-results
+          sudo apt-add-repository ppa:qameta/allure -y
+          sudo apt-get update
+          sudo apt-get install allure -y
+          allure --version
 
-      # Step 6: Generate Allure report
+      # Step 6: Generate Allure report using CLI
       - name: Generate Allure report
         run: |
-          if [ "$(ls -A target/allure-results 2>/dev/null)" ]; then
-            echo "Allure results found, generating report..."
-            mvn allure:report -Dallure.report.directory=target/allure-report
+          mkdir -p target/allure-report
+          if [ -d "target/allure-results" ] && [ "$(ls -A target/allure-results)" ]; then
+            echo "Generating Allure report with CLI..."
+            allure generate target/allure-results -o target/allure-report --clean
           else
             echo "⚠️ No Allure results found. Creating placeholder report."
             mkdir -p target/allure-report
             echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
           fi
 
-      # Step 7: Upload Allure report as artifact (include all files recursively)
+      # Step 7: Verify Allure report structure
+      - name: Verify Allure report
+        run: |
+          REQUIRED=("index.html" "css" "js" "data" "plugins")
+          MISSING=()
+          for item in "${REQUIRED[@]}"; do
+            if [ ! -e "target/allure-report/$item" ]; then
+              MISSING+=("$item")
+            fi
+          done
+          if [ ${#MISSING[@]} -ne 0 ]; then
+            echo "❌ Missing required Allure report files/folders: ${MISSING[*]}"
+            exit 1
+          else
+            echo "✅ All required Allure files/folders exist."
+
+      # Step 8: Upload Allure report as artifact
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -66,13 +84,12 @@ jobs:
           path: target/allure-report/**
           if-no-files-found: warn
 
-      # Step 8: Deploy Allure report to GitHub Pages
+      # Step 9: Deploy Allure report to GitHub Pages
       - name: Deploy Allure report to GitHub Pages
         if: github.ref == 'refs/heads/main'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # ✅ Publish contents of target/allure-report directly at root
           publish_dir: target/allure-report/
           keep_files: false
           force_orphan: true
@@ -80,7 +97,7 @@ jobs:
           allow_empty_commit: false
           enable_jekyll: false
 
-      # Step 9: Add clickable report link to workflow summary
+      # Step 10: Add clickable report link to workflow summary
       - name: Add Allure report link to workflow summary
         if: github.ref == 'refs/heads/main'
         run: |
