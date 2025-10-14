@@ -39,12 +39,13 @@ jobs:
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Install Allure CLI
+      # Step 5: Install Allure CLI from GitHub release
       - name: Install Allure CLI
         run: |
-          sudo apt-add-repository ppa:qameta/allure -y
-          sudo apt-get update
-          sudo apt-get install allure -y
+          ALLURE_VERSION=2.27.0
+          wget https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.zip
+          unzip -o allure-${ALLURE_VERSION}.zip -d $HOME/allure
+          sudo ln -s $HOME/allure/allure-${ALLURE_VERSION}/bin/allure /usr/local/bin/allure
           allure --version
 
       # Step 6: Generate Allure report using CLI
@@ -58,7 +59,6 @@ jobs:
             echo "⚠️ No Allure results found. Creating placeholder report."
             mkdir -p target/allure-report
             echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
-          fi
 
       # Step 7: Verify Allure report structure
       - name: Verify Allure report
