@@ -79,20 +79,22 @@ void createExampleTest() {
 - Check Allure reports for results and documentation.
 
 ## Issues Found
+Issues Found
 
-As mentioned, Restful Booker API has some bugs for the fun of its testers. Here are the ones that I found:
+1. Get Booking IDs (https://restful-booker.herokuapp.com/booking)
 
-`https://restful-booker.herokuapp.com/booking` - Get Booking Ids
-* Filtering by checkout date does not work: returns random results instead of bookings with greater or equal checkout date. For that reason, I had to use @Disabled annotation for test with checkout dates
+    Filtering by checkout date doesn’t work. It returns random results instead of bookings with the correct checkout date. I had to disable the test for checkout date filtering because of this.
 
-`https://restful-booker.herokuapp.com/booking` - Create Booking
-* Total price value cannot be a floating number; precision is lost during saving.
-* Checkin and checkout dates are validated and booking is not created, but 200 OK status code is returned; 400 Bad Request would be better
+2. Create Booking (https://restful-booker.herokuapp.com/booking)
 
-`https://restful-booker.herokuapp.com/booking/1` - Delete Booking
-* Auth can be set only via Cookie header, doesn't work with Authorization header (returns 403 Forbidden)
-* Successful Delete action returns 201 Created, which is rather poor choice for delete action. It's rather used when creating new data.
-* Delete non existing booking returns 405 Method Not Allowed. I believe it should be 404 Not Found and marked my test as @Disabled.
+    Total price can’t be a decimal number properly; precision is lost when saving.
+    Check-in and check-out dates are correctly validated, so invalid bookings are blocked, but the API still returns a 200 OK. A 400 Bad Request would make more sense.
 
-`https://restful-booker.herokuapp.com/ping` - HealthCheck
-* Ping returns 201 Created - I believe 200 OK would be a better choice
+3. Delete Booking (https://restful-booker.herokuapp.com/booking/1)
+
+    Authentication only works with a Cookie header. Using the Authorization header gives 403 Forbidden.
+    Successfully deleting a booking returns 201 Created, which is incorrect. 200 OK or 204 No Content would be better.
+    Deleting a non-existent booking returns 405 Method Not Allowed. It should return 404 Not Found. I had to disable this test.
+
+4. Health Check (https://restful-booker.herokuapp.com/ping)
+    Ping returns 201 Created. A 200 OK would be more appropriate.
