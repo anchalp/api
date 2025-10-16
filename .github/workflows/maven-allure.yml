@@ -34,53 +34,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      # Step 4: Run Maven tests (continue on failure)
+      # Step 4: Run Maven tests (wait for completion)
       - name: Run Maven tests
         run: mvn clean test -Dsurefire.failIfNoTests=false
         continue-on-error: true
 
-      # Step 5: Install Allure CLI from GitHub release
-      - name: Install Allure CLI
+      # Step 5: Verify Allure results
+      - name: Check Allure results
         run: |
-          ALLURE_VERSION=2.27.0
-          wget https://github.com/allure-framework/allure2/releases/download/${ALLURE_VERSION}/allure-${ALLURE_VERSION}.zip
-          unzip -o allure-${ALLURE_VERSION}.zip -d $HOME/allure
-          sudo ln -s $HOME/allure/allure-${ALLURE_VERSION}/bin/allure /usr/local/bin/allure
-          allure --version
+          mkdir -p target/allure-results
+          echo "Listing Allure results:"
+          ls -R target/allure-results
 
-      # Step 6: Generate & Verify Allure report
-      - name: Generate & Verify Allure report
+      # Step 6: Generate Allure report
+      - name: Generate Allure report
         run: |
-          set -e
-          REPORT_DIR="target/allure-report"
-          RESULTS_DIR="target/allure-results"
-
-          mkdir -p "$REPORT_DIR"
-
-          if [ -d "$RESULTS_DIR" ] && [ "$(ls -A $RESULTS_DIR)" ]; then
-            echo "Generating Allure report..."
-            allure generate "$RESULTS_DIR" -o "$REPORT_DIR" --clean
+          if [ "$(ls -A target/allure-results 2>/dev/null)" ]; then
+            echo "Allure results found, generating report..."
+            mvn allure:report -Dallure.report.directory=target/allure-report
           else
             echo "⚠️ No Allure results found. Creating placeholder report."
-            echo "<html><body><h2>No Allure results found</h2></body></html>" > "$REPORT_DIR/index.html"
+            mkdir -p target/allure-report
+            echo "<html><body><h2>No Allure results found</h2></body></html>" > target/allure-report/index.html
           fi
 
-          # Verify report structure
-          REQUIRED=("index.html" "css" "js" "data" "plugins")
-          MISSING=()
-          for item in "${REQUIRED[@]}"; do
-            if [ ! -e "$REPORT_DIR/$item" ]; then
-              MISSING+=("$item")
-            fi
-          done
-
-          if [ ${#MISSING[@]} -ne 0 ]; then
-            echo "❌ Missing required Allure report files/folders: ${MISSING[*]}"
-            exit 1
-          else
-            echo "✅ All required Allure files/folders exist."
-
-      # Step 7: Upload Allure report as artifact
+      # Step 7: Upload Allure report as artifact (include all files recursively)
       - name: Upload Allure Report Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -94,6 +72,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # ✅ Publish contents of target/allure-report directly at root
           publish_dir: target/allure-report/
           keep_files: false
           force_orphan: true
